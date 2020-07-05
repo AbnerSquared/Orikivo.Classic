@@ -1,0 +1,83 @@
+{
+    "id": 0,
+    "name": "Orikos Alpha",
+    "ppu": {
+        "width": 8,
+        "height": 8
+    },
+    "fallback": true,
+    "padding": 1,
+    "spacing": 6,
+    "overhang": 0,
+    "styles": [
+        {
+            "type": 0,
+            "sheets": [
+                {
+                    "index": 0,
+                    "path": "orikos_alpha_default0.png"
+                },
+                {
+                    "index": 1,
+                    "path": "orikos_alpha_default0.png"
+                },
+                {
+                    "index": 2,
+                    "path": "orikos_alpha_default2.png"
+                },
+                {
+                    "index": 3,
+                    "path": "orikos_alpha_default3.png"
+                },
+                {
+                    "index": 4,
+                    "path": "orikos_alpha_default4.png"
+                },
+                {
+                    "index": 5,
+                    "path": "orikos_alpha_default5.png"
+                },
+                {
+                    "index": 6,
+                    "path": "orikos_alpha_default6.png"
+                },
+                {
+                    "index": 7,
+                    "path": "orikos_alpha_default7.png"
+                },
+                {
+                    "index": 8,
+                    "path": "orikos_alpha_default8.png"
+                },
+                {
+                    "index": 9,
+                    "path": "orikos_alpha_default9.png"
+                },
+                {
+                    "index": 10,
+                    "path": "orikos_alpha_default10.png"
+                },
+                {
+                    "index": 11,
+                    "path": "orikos_alpha_default11.png"
+                },
+                {
+                    "index": 12,
+                    "path": "orikos_alpha_default12.png"
+                },
+                {
+                    "index": 13,
+                    "path": "orikos_alpha_default13.png"
+                },
+                {
+                    "index": 14,
+                    "path": "orikos_alpha_default14.png"
+                },
+                {
+                    "index": 15,
+                    "path": "orikos_alpha_default15.png"
+                }
+            ]
+        }
+    ]
+}

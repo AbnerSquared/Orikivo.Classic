@@ -1,0 +1,27 @@
+{
+    "id": 3,
+    "name": "Fybrit",
+    "ppu": {
+        "width": 6,
+        "height": 6
+    },
+    "fallback": false,
+    "padding": 1,
+    "spacing": 4,
+    "overhang": 0,
+    "styles": [
+        {
+            "type": 0,
+            "sheets": [
+                {
+                    "index": 0,
+                    "path": "fybrit_default0.png"
+                },
+                {
+                    "index": 1,
+                    "path": "fybrit_default0.png"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,58 @@
+{
+    "id": 1,
+    "socket_id": 5001,
+    "name": "Legacy",
+    "ppu": {
+        "width": 8,
+        "height": 8
+    },
+    "fallback": true,
+    "padding": 1,
+    "spacing": 6,
+    "overhang": 0,
+    "styles":
+    [
+        {
+            "type": 0,
+            "sheets": [
+                {
+                    "index": 0,
+                    "path": "legacy_default0.png"
+                },
+                {
+                    "index": 1,
+                    "path": "legacy_default0.png"
+                },
+                {
+                    "index": 2,
+                    "path": "legacy_default2.png"
+                },
+                {
+                    "index": 3,
+                    "path": "legacy_default3.png"
+                },
+                {
+                    "index": 4,
+                    "path": "legacy_default4.png"
+                },
+                {
+                    "index": 5,
+                    "path": "legacy_default5.png"
+                },
+                {
+                    "index": 6,
+                    "path": "legacy_default6.png"
+                },
+                {
+                    "index": 7,
+                    "path": "legacy_default7.png"
+                },
+                {
+                    "index": 8,
+                    "path": "legacy_default8.png"
+                }
+            ]
+        }
+    ]
+
+}

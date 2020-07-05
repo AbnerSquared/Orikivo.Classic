@@ -1,0 +1,29 @@
+{
+    "id": 2,
+    "socket_id": 5002,
+    "name": "Foxtrot",
+    "ppu": {
+        "width": 8,
+        "height": 8
+    },
+    "fallback": true,
+    "padding": 1,
+    "spacing": 4,
+    "overhang": 2,
+    "styles":
+    [
+        {
+            "type": 0,
+            "sheets": [
+            {
+                "index": 0,
+                "path": "foxtrot_default0.png"
+            },
+            {
+                "index": 1,
+                "path": "foxtrot_default1.png"
+            }
+            ]
+        }
+    ]
+}

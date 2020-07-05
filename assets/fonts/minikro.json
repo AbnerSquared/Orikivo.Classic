@@ -1,0 +1,28 @@
+{
+    "id": 4,
+    "name": "Minikro",
+    "ppu": {
+        "width": 4,
+        "height": 4
+    },
+    "fallback": false,
+    "padding": 1,
+    "spacing": 2,
+    "overhang": 0,
+    "styles":
+    [
+        {
+            "type": 0,
+            "sheets": [
+            {
+                "index": 0,
+                "path": "minikro_default0.png"
+            },
+            {
+                "index": 1,
+                "path": "minikro_default0.png"
+            }
+            ]
+        }
+    ]
+}

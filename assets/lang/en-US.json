@@ -1,0 +1,102 @@
+{
+    "bot.stable.name": "Orikivo",
+    "bot.unstable.name": "Orikivo Unstable",
+    
+    "module.misc.name": "Misc",
+    "module.misc.description": "A group of commands that have no distinct category.",
+    
+    "error.forced.title": "Oops!",
+    "error.forced.text": "An error has occured.",
+    "error.exception.title": "Yikes!",
+    "error.exception.text": "An exception has been thrown.",
+    "error.multiple.title": "Overflow!",
+    "error.multiple.text": "The method executed returned too many values.",
+    "error.missing_permissions.title": "Access denied.",
+    "error.missing_permissions.text": "You don't have the authority to execute this method.",
+    "error.empty_command_info": "There are no CommandInfo values to look through.",
+    "error.failed_context_value_match": "There were no matching ContextValue objects found from the name \"{p}\".",
+    
+    "command.syntax.optional": "Optional",
+    "command.syntax.trailing": "Trailing",
+    "command.syntax.mentionable": "Mentionable",
+    
+    "command.help.description": "Gets the underlying DisplayInfo for a specified ContextValue.",
+    "command.help.empty.title": "Orikivo",
+    "command.help.notice.novice": "Do you need help using Orikivo?",
+    "command.help.basics.description": "This contains basic guides to help you set up Orikivo for your server.",
+    "command.help.advanced.description": "This provides a detailed list of information to help you get the most out of Orikivo.",
+    "command.help.types.description": "A list of all unique objects that Orikivo uses that describes the purpose that each one serves.",
+    
+    "command.lobby_create.success.title": "Success!",
+    "command.lobby_create.success.text": "{p} has been created. [{p}]",
+
+    "command.greetings.notice.disabled": "Greetings are currently disabled.",
+    
+    "command.greetings_add.success": "Greeting #{p} has been added.",
+    "command.greetings_add.description": "Adds a greeting to the collection of greetings for {p}",
+    
+    "command.greetings_remove.description": "Removes the greeting located at the specified index (0-based).",
+    "command.greetings_remove.success": "Greeting #{p} has been removed.",
+
+    "command.greetings_toggle.description": "Toggles the ability to use greetings whenever a user joins.",
+    "command.greetings_toggle.enabled": "Greetings enabled.",
+    "command.greetings_toggle.disabled": "Greetings disabled.",
+
+    "command.greetings_clear.success": "All greetings have been removed.",
+
+    "command.stats_gimi.title": "Gimi",
+
+    "command.gimi.won.reply.default": "You have won.",
+    "command.gimi.won.reply.random": [
+        "A little bit of money can go far."
+    ],
+
+    "command.gimi.won_gold.reply.default": "You have been given wealth.",
+    "command.gimi.won_gold.reply.random": [
+        "Midas has been kind to you.",
+        "The calm before."
+    ],
+
+    "command.gimi.loss.reply.default": "You have lost.",
+    "command.gimi.loss.reply.random": [
+        "Sorry, but I can't host myself for free.",
+        "While I giveth, I also taketh."
+    ],
+
+    "command.gimi.loss_debt.reply.default": "You have been fined.",
+    "command.gimi.loss_debt.reply.random": [
+        "I can't be your only source of income.",
+        "You reap what you sow.",
+        "Please stop. You're only hurting yourself."
+    ],
+
+    "command.gimi.loss_curse.reply.default": "You have been given emptiness.",
+    "command.gimi.loss_curse.reply.random": [
+        "Experience oblivion.",
+        "The storm."
+    ],
+
+    "emote.money.name": "Money",
+    "emote.money.icon.default": "\u1f4b8",
+
+    "merit.since_the_start.name": "Since the Start",
+    "merit.since_the_start.description": "Participated with Orikivo before ReBirth (v0.1.0).",
+
+    "merit.dark_spectrum.name": "Dark Spectrum",
+    "merit.dark_spectrum.description": "Learn about the other side.",
+
+    "merit.a_new_dawn.name": "New Dawn",
+    "merit.a_new_dawn.description": "Your first transaction was positive.",
+
+    "merit.a_dim_dusk.name": "Dim Dusk",
+    "merit.an_dim_dusk.description": "Your first transaction was negative.",
+
+    "merit.audit_launch.name": "Audit Launch",
+    "merit.audit_launch.description": "Receive your first debt fine.",
+
+    "merit.jaws_of_debt.name": "Into the Jaws of Debt",
+    "merit.jaws_of_debt.description": "Survive a negative encounter with ORS.",
+
+    "merit.viewers_fatigue.name": "Viewer's Fatigue",
+    "merit.viewers_fatigue.description": "Spectate 10 games."
+}
