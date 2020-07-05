@@ -1,5 +1,5 @@
 ﻿# Orikivo.Classic
-Orikivo's source code before its rewrite. All of its files have been organized accordingly, but nothing has been changed. This represents the blob of concepts that Orikivo was before I planned everything together.
+Orikivo's source code before its rewrite. All of its files are planned to be optimized and organized, but nothing will change. This represents the blob of concepts that Orikivo was before I planned everything together.
 
 # Plans
 My goal with Orikivo.Classic is to retain the same structure as it once had, while improving and organizing the entire code structure.
