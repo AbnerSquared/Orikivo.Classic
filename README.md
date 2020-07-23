@@ -3,6 +3,7 @@ Orikivo's source code before its rewrite. All of its files are planned to be opt
 
 # Plans
 My goal with Orikivo.Classic is to retain the same structure as it once had, while improving and organizing the entire code structure.
+> Note: This may be held off until Orikivo's current library is complete.
 
 ## Checklist
 - Place all empty classes into a file called `EMPTY_CLASSES.txt`, which only lists out all empty classes.
