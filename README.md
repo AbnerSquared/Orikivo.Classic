@@ -1,4 +1,6 @@
-﻿# Orikivo.Classic
+> **Notice:** This code is not representative of how I program today. I've been learning a lot about proper code ettiquette, and always try my best to have readable code as of now.
+
+# Orikivo.Classic
 Orikivo's source code before its rewrite. All of its files are planned to be optimized and organized, but nothing will change. This represents the blob of concepts that Orikivo was before I planned everything together.
 
 # Plans
