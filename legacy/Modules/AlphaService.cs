@@ -196,7 +196,7 @@ namespace Orikivo.Modules
                 la = new LetterAttachment(url);
             }
 
-            Letter test = new Letter(a, subject, message, la);
+            Letter test = new Letter(new Author(a), subject, message, la);
 
             //Letter test2 = new Letter(a, "hello2", "what is this", null);
             //test2 = test2.AppendThread(test);

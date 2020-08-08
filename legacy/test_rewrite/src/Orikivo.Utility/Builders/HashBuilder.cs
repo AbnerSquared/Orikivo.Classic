@@ -44,10 +44,10 @@ namespace Orikivo.Utility
             {
                 Debugger.Write("-- The hash matched the pattern. --");
                 Match match = regex.Match(hash);
-                match.Groups.ForEach(x => x.Value.Debug($"Index {x.Index}; Length {x.Length}"));
+                //match.Groups.ForEach(x => x.Value.Debug($"Index {x.Index}; Length {x.Length}"));
 
                 string[] data = new string[3];
-                match.Groups.Enumerate(x => x.Value).Skip(1).ToArray().CopyTo(data, 0); // skip one since the first one is the entire capture
+                match.Groups.Values.Skip(1).ToArray().CopyTo(data, 0); // skip one since the first one is the entire capture
                 result = new OriHash(int.Parse(data[0]), int.Parse(data[1]), data[2]);
                 return true;
             }

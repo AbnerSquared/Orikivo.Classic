@@ -182,8 +182,8 @@ namespace Orikivo
         private async Task ReturnGamblerAsync(ulong id, ulong wager)
         {
             OldAccount a = GetOrAddAccount(id);
-            CompactMessage msg = new CompactMessage(embeds: GetGambleError(a, wager));
-            OldMail m = new OldMail("Orikivo", "Gambling Error", msg);
+            //CompactMessage msg = new CompactMessage(embeds: GetGambleError(a, wager));
+            //OldMail m = new OldMail("Orikivo", "Gambling Error", msg);
             //await m.SendAsync(a, GlobalClient);
             a.Give(wager);
         }

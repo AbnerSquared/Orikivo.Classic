@@ -82,6 +82,11 @@ namespace Orikivo.Wrappers.Unstable
         public bool ForceIpv6;
     }
 
+    public class MatchFilter
+    {
+
+    }
+
     public class VideoSelectionOptions
     {
         public int PlaylistStartIndex;

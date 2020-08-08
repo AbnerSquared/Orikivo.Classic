@@ -57,10 +57,10 @@ namespace Orikivo
 
             collection
                 .AddSingleton<DataContainer>() // Where all data is stored.
-                .AddSingleton(new DiscordSocketClient(SocketEntityW.GetDefault())) // Orikivo's required boot.
+                //.AddSingleton(new DiscordSocketClient(SocketEntityW.GetDefault())) // Orikivo's required boot.
                 .AddSingleton(new CommandService(CommandEntity.GetDefault())) // Orikivo's command information.
                 .AddSingleton<NetworkManager>() // Controls Discord connection.
-                .AddSingleton<EventLogger>() // Controls events that occur on Orikivo.
+                //.AddSingleton<EventLogger>() // Controls events that occur on Orikivo.
                 .AddSingleton(Config); // All of the passwords for public services.
         }
     }

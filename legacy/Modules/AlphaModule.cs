@@ -12,11 +12,8 @@ using Discord;
 using Orikivo.Systems.Services;
 using System.IO;
 using System.Drawing;
-using Color = Discord.Color;
 using Orikivo.Providers;
 using System.Text;
-using Orikivo.Systems.Dependencies;
-using System.Drawing.Imaging;
 using SysImageFormat = System.Drawing.Imaging.ImageFormat;
 using ImageFormat = Discord.ImageFormat;
 using Orikivo.Wrappers;
@@ -29,24 +26,13 @@ namespace Orikivo.Modules
     [DontAutoLoad]
     public class AlphaModule : ModuleBase<OrikivoCommandContext>
     {
-        // import single-launch services here.
-        private readonly CommandService _service;
         private readonly DiscordSocketClient _client;
         private readonly IConfigurationRoot _config;
-        private Random _rng;
 
-        public AlphaModule
-        (
-            CommandService service,
-            DiscordSocketClient client,
-            IConfigurationRoot config,
-            Random rng
-        )
+        public AlphaModule(DiscordSocketClient client, IConfigurationRoot config)
         {
-            _service = service;
             _client = client;
             _config = config;
-            _rng = rng;
         }
 
         //[Command("solvetest")]
@@ -76,9 +62,9 @@ namespace Orikivo.Modules
         [Summary("Read the current time derived from the UTC standard on Orikivo.")]
         public async Task ReadTimeAsync()
         {
-            EmbedBuilder eb = Embedder.DefaultEmbed;
-            eb.WithTitle(DateTime.Now.ToFullOriTime());
-            await Context.Channel.SendEmbedAsync(eb.Build());
+            EmbedBuilder embed = Embedder.DefaultEmbed;
+            embed.WithTitle(DateTime.Now.ToFullOriTime());
+            await Context.Channel.SendEmbedAsync(embed.Build());
         }
 
         // Complete.
@@ -96,7 +82,7 @@ namespace Orikivo.Modules
         [Summary("Learn about or verify votes.")]
         public async Task VoteAsync()
         {
-            LockedDblWrapper dbl = new LockedDblWrapper(Context.Client.CurrentUser.Id, _config["api:dbl"]);
+            var dbl = new LockedDblWrapper(Context.Client.CurrentUser.Id, _config["api:dbl"]);
             bool voted = dbl.HasVotedAsync(Context.User.Id).Result;
             EmbedBuilder e = EmbedData.DefaultEmbed;
             if (voted)
@@ -107,30 +93,33 @@ namespace Orikivo.Modules
             else
             {
                 e.WithTitle("It looks like you haven't voted yet!");
-                StringBuilder str = new StringBuilder();
-                str.AppendLine("As of now, voting doesn't bring perks aside from a genuine smile.");
-                str.AppendLine("But that doesn't mean it won't help in the long run!".MarkdownBold());
-                str.Append("When the time is right, voting will provide fun bonuses and merits for all who participate. ");
-                str.AppendLine($"It also helps us out. In the end, it's your call :)");
-                str.Append($"You can vote [**here!**]({OldGlobal.VotingUrl})");
-                e.WithDescription(str.ToString());
+
+                var description = new StringBuilder();
+                description.AppendLine("As of now, voting doesn't bring perks aside from a genuine smile.");
+                description.AppendLine("But that doesn't mean it won't help in the long run!".MarkdownBold());
+                description.Append("When the time is right, voting will provide fun bonuses and merits for all who participate. ");
+                description.AppendLine($"It also helps us out. In the end, it's your call :)");
+                description.Append($"You can vote [**here!**]({OldGlobal.VotingUrl})");
+
+                e.WithDescription(description.ToString());
             }
 
             await ReplyAsync(embed: e.Build());
         }
 
-        // enhance react features
         [Command("react"), Alias("rct")]
-        [Summary("Allows the user to react with Orikivo Mini. | Reactions: owo")]
-        public async Task React([Remainder]string reaction)
+        [Summary("Allows the user to react with Monori. | Reactions: owo")]
+        public async Task ReactAsync([Remainder]string reactionId)
         {
             var embedReaction = new EmbedBuilder
             {
-                Color = EmbedData.GetColor(reaction),
-                ImageUrl = EmbedData.GetReaction(reaction)
+                Color = EmbedData.GetColor(reactionId),
+                ImageUrl = EmbedData.GetReaction(reactionId)
             };
-            await ReplyAsync("", false, embedReaction.Build());
+
+            await ReplyAsync(embed: embedReaction.Build());
         }
+
         /*
         [Command("notifications")]
         [Summary("View all notifications.")]
@@ -419,11 +408,12 @@ namespace Orikivo.Modules
             */
         [Command("captcha")]
         [Summary("Generate a new captcha. (Rendering Demo)")]
-        public async Task BuildVerifier()
+        public async Task CaptchaAsync()
         {
-            CaptchaBuilder v = new CaptchaBuilder();
-            string url = ".//data//captcha.png";
-            v.Captcha.SaveBitmap(url, SysImageFormat.Png);
+            var builder = new CaptchaBuilder();
+            const string url = ".//data//captcha.png";
+
+            builder.Captcha.SaveBitmap(url, SysImageFormat.Png);
 
             EmbedBuilder e = EmbedData.DefaultEmbed;
             e.WithImageUrl($"attachment://{Path.GetFileName(url)}");
@@ -448,60 +438,82 @@ namespace Orikivo.Modules
         [RequireOwner]
         [Command("activity"), Priority(2)]
         [Summary("Sets the type of activity alongside the activity name itself.")]
-        public async Task ChangeActivityNameAsync(ActivityType type, [Remainder]string name)
+        public async Task UpdateActivityAsync(ActivityType type, [Remainder]string name)
         {
-            var e = new EmbedBuilder();
-            e.Color = EmbedData.GetColor("origreen");
-            name = name ?? "literally nothing.";
+            name ??= "literally nothing.";
+
+            var embed = new EmbedBuilder
+            {
+                Color = EmbedData.GetColor("origreen"),
+                Description = $"The activity name is now `{name}`"
+            };
+
             Context.Data.Global.SetActivity(name, type);
             await _client.UpdateActivity(Context.Data.Global.Activity);
-            await ReplyAsync(embed: $"The activity name is now `{name}`".ToEmbedDescription(e).Build());
+            await ReplyAsync(embed: embed.Build());
         }
 
         [RequireOwner]
         [Command("activity"), Priority(1)]
         [Summary("Places a new activity name the value written.")]
-        public async Task ChangeActivityNameAsync([Remainder]string name)
+        public async Task UpdateActivityAsync([Remainder]string name)
         {
-            var e = new EmbedBuilder();
-            e.Color = EmbedData.GetColor("origreen");
-            name = name ?? "literally nothing.";
+            name ??= "literally nothing.";
+
+            var embed = new EmbedBuilder
+            {
+                Color = EmbedData.GetColor("origreen"),
+                Description = $"The activity name is now `{name}`"
+            };
+
             Context.Data.Global.SetActivity(name);
             await _client.UpdateActivity(Context.Data.Global.Activity);
-            await ReplyAsync(embed: $"The activity name is now `{name}`".ToEmbedDescription(e).Build());
+            await ReplyAsync(embed: embed.Build());
         }
 
         [Command("activity"), Priority(0)]
         [Summary("Returns the activity format Orikivo is using.")]
-        public async Task ViewGlobalDataAsync()
+        public async Task ViewActivityAsync()
         {
-            var e = new EmbedBuilder();
-            e.Color = EmbedData.GetColor("owo");
-            await ReplyAsync(embed: $"{Context.Data.Global.Activity.Type.ToTypeString().MarkdownBold() + " " + Context.Data.Global.Activity.Name}".ToEmbedDescription(e).Build());
+            var embed = new EmbedBuilder
+            {
+                Color = EmbedData.GetColor("owo"),
+                Description = $"{Context.Data.Global.Activity.Type.ToTypeString().MarkdownBold()} {Context.Data.Global.Activity.Name}"
+            };
+
+            await ReplyAsync(embed: embed.Build());
         }
 
         [Command("shop")]
         [Summary("Take a look at the shop, and see what you like! (Provided you can buy anything)")]
         public async Task ViewShopAsync()
         {
-            StoreManager tmp = new StoreManager();
-            List<string> items = new List<string>();
+            var tmp = new StoreManager();
+            var items = new List<string>();
+
+            // TODO: Merge items into generic type
             items.Add("**Schemes**");
             foreach (OldCardColorScheme scheme in tmp.ColorSchemes)
             {
                 items.Add($"{scheme.Name} | {EmojiIndex.Balance}{scheme.Cost.ToPlaceValue().MarkdownBold()}");
             }
+
             items.Add("**Consumables**");
             foreach (ActionItem item in tmp.Consumables)
             {
                 items.Add($"{item.Name} | {EmojiIndex.Balance}{item.Cost.ToPlaceValue().MarkdownBold()}");
             }
 
-            var e = new EmbedBuilder();
-            e.Color = EmbedData.GetColor("origreen");
-            e.Title = "Ori's Corner Store";
-            e.Footer = new EmbedFooterBuilder().WithText($"{Context.Server.Config.GetPrefix(Context)}inspect <name>");
-            await ReplyAsync(embed: string.Join('\n', items).ToEmbedDescription(e).Build());
+            var embed = new EmbedBuilder
+            {
+                Color = EmbedData.GetColor("origreen"),
+                Title = "Ori's Corner Store",
+                Description = string.Join('\n', items)
+            };
+
+            embed.WithFooter($"{Context.Server.Config.GetPrefix(Context)}inspect <name>");
+
+            await ReplyAsync(embed: embed.Build());
         }
 
         [Command("inspect"), Alias("view")]
@@ -510,8 +522,8 @@ namespace Orikivo.Modules
         {
             try
             {
-                StoreManager tmp = new StoreManager();
-                ActionItem item = tmp.Consumables.Where(x => x.Name.ToLower() == name.ToLower()).FirstOrDefault();
+                var tmp = new StoreManager();
+                ActionItem item = tmp.Consumables.FirstOrDefault(x => string.Equals(x.Name, name, StringComparison.CurrentCultureIgnoreCase));
                 if (item == null)
                 {
                     Debugger.Write("yeah, this is fine.");
@@ -704,6 +716,7 @@ namespace Orikivo.Modules
             await ReplyAsync(embed: r.ToEmbedDescription(e).Build());
         }
         */
+
         [Command("flags")]
         [Summary("View reporting flag types, with each one representing a specific priority level.")]
         public async Task ViewFlagTypeAsync()
@@ -712,26 +725,20 @@ namespace Orikivo.Modules
             e.WithColor(EmbedData.GetColor("steamerror"));
             e.WithTitle("Report Guide - Priority Flags");
 
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"{EmojiIndex.PriorityFlag} | **P0 (Fundamental)**");
-            sb.AppendLine($"These are for situations in which the function executed can be exploited to a point of considerably damaging Orikivo's data.");
+            var guide = new StringBuilder();
+            guide.AppendLine($"{EmojiIndex.PriorityFlag} | **P0 (Fundamental)**");
+            guide.AppendLine($"These are for situations in which the function executed can be exploited to a point of considerably damaging Orikivo's data.");
+            guide.AppendLine($"\n{EmojiIndex.ExceptionFlag} | **P1 (Runtime)**");
+            guide.AppendLine($"In the case that a command fails to even work, it may most likely be due to an exception. In most cases, you should see an exception box, from which you can directly send as a report.");
+            guide.AppendLine($"\n{EmojiIndex.SpeedFlag} | **P2 (Blocking)**");
+            guide.AppendLine($"These are for situations in which a command you execute takes much longer than the average execution speed. They tend to block gateways, and harm the process speed of Orikivo.");
+            guide.AppendLine($"\n{EmojiIndex.VisualFlag} | **P3 (Visual)**");
+            guide.AppendLine($"This falls under grammatical mishaps, visual bugs, and just plain incorrect information.");
+            guide.AppendLine($"\n{EmojiIndex.SuggestFlag} | **P4 (Improvement)**");
+            guide.AppendLine($"Use this flag if you wish to add input or suggestions to an existing command to simplify and speed up execution.");
 
-            sb.AppendLine($"\n{EmojiIndex.ExceptionFlag} | **P1 (Runtime)**");
-            sb.AppendLine($"In the case that a command fails to even work, it may most likely be due to an exception. In most cases, you should see an exception box, from which you can directly send as a report.");
-
-            sb.AppendLine($"\n{EmojiIndex.SpeedFlag} | **P2 (Blocking)**");
-            sb.AppendLine($"These are for situations in which a command you execute takes much longer than the average execution speed. They tend to block gateways, and harm the process speed of Orikivo.");
-
-            sb.AppendLine($"\n{EmojiIndex.VisualFlag} | **P3 (Visual)**");
-            sb.AppendLine($"This falls under grammatical mishaps, visual bugs, and just plain incorrect information.");
-
-            sb.AppendLine($"\n{EmojiIndex.SuggestFlag} | **P4 (Improvement)**");
-            sb.AppendLine($"Use this flag if you wish to add input or suggestions to an existing command to simplify and speed up execution.");
-
-            e.WithDescription(sb.ToString());
-
-            EmbedFooterBuilder f = new EmbedFooterBuilder();
-            f.WithText("Tip: You may also type the priority number when reporting, rather than the emoji variant.");
+            e.WithDescription(guide.ToString());
+            e.WithFooter("Tip: You may also type the priority number when reporting, rather than the emoji variant.");
 
             await ReplyAsync(embed: e.Build());
         }
@@ -1042,6 +1049,8 @@ namespace Orikivo.Modules
 
         public Embed GenerateServerBox(Server s)
         {
+            OldAccount a = Context.Account ?? Context.Data.GetOrAddAccount(Context.User);
+
             var e = new EmbedBuilder();
             e.Color = EmbedData.GetColor("error");
 
@@ -1050,11 +1059,8 @@ namespace Orikivo.Modules
 
             if (g.TextChannels.Any(x => x.Id == s.Config.InboundChannel))
             {
-
-
-                SocketTextChannel t = g.TextChannels.Where(x => x.Id == s.Config.InboundChannel).First();
+                SocketTextChannel t = g.TextChannels.First(x => x.Id == s.Config.InboundChannel);
                 inbound = $"(Bound to {t.Mention})";
-
             }
             else
             {
@@ -1069,8 +1075,7 @@ namespace Orikivo.Modules
             }
 
             e.WithTitle(s.Name);
-            OldAccount a = Context.Account ?? Context.Data.GetOrAddAccount(Context.User);
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendLine($"{EmojiIndex.Identifier.Pack(a)} {s.Id}");
             sb.AppendLine($"{EmojiIndex.Text.Pack(a)} **CrossChat** {(s.Config.CrossChat ? inbound : "| Disabled")}");
             //sb.AppendLine($"{EmojiIndex.Experience.Pack()} **Experience** Global");
@@ -1085,7 +1090,7 @@ namespace Orikivo.Modules
 
         [Command("daily")]
         [Summary("Receive your daily funding.")]
-        public async Task EarnDailyAsync()
+        public async Task DailyAsync()
         {
             OldAccount a = Context.Account ?? Context.Data.GetOrAddAccount(Context.User);
 
@@ -1274,12 +1279,12 @@ namespace Orikivo.Modules
             var setUrl = pfp.Exists() ? $"{baseUrl}{avatarId}.png" : ".//Templates//avatar_null.png";
             var path = $"{baseUrl}{filename}";
 
-            var avatar = img.TryGetAvatar(pfp, setUrl);
-            PixelRenderingOptions opt = new PixelRenderingOptions(a);
+            Bitmap avatar = img.TryGetAvatar(pfp, setUrl);
+            var opt = new PixelRenderingOptions(a);
             avatar = PixelEngine.Pixelate(avatar, opt);
-            var profile = PixelEngine.DrawCard(avatar, a.Config.Nickname ?? u.Username, u.Status.ToString(), GetActivityStatus(u), a.Data.Level, a.Balance, a.Data.Experience, (ulong)a.Data.ExperienceToNextLevel(), opt);
+            Bitmap profile = PixelEngine.DrawCard(avatar, a.Config.Nickname ?? u.Username, u.Status.ToString(), GetActivityStatus(u), a.Data.Level, a.Balance, a.Data.Experience, (ulong)a.Data.ExperienceToNextLevel(), opt);
             profile = ImageConfiguration.Resize(profile, profile.Width * 2, profile.Height * 2);
-            var format = SysImageFormat.Png;
+            SysImageFormat format = SysImageFormat.Png;
             img.SaveAs(profile, path, format);
 
             var e = new EmbedBuilder();
@@ -1445,7 +1450,25 @@ namespace Orikivo.Modules
         [Summary("View and simulate designs before implementation.")]
         public async Task GetDesign(string context = null)
         {
-            List<string> links = new List<string>
+            var references = new Dictionary<string, string>
+            {
+                ["profile"] = ".//resources//tmp_profile.png",
+                ["musicplayer"] = ".//resources//tmp_musicplayer.png",
+                ["musicskip"] = ".//resources//tmp_musicskip.png",
+                ["musicskip2"] = ".//resources//tmp_musicskip2.png",
+                ["levelup"] = ".//resources//tmp_levelup.png",
+                ["modules"] = ".//resources//tmp_moduleicons.png",
+                ["loss"] = ".//resources//tmp_loss.png",
+                ["shops"] = ".//resources//tmp_shops.png",
+                ["itemviewer"] = ".//resources//tmp_itemviewer.png",
+                ["itemviewer2"] = ".//resources//tmp_itemviewer.png",
+                ["levelicons"] = ".//resources//tmp_levelicons.png",
+                ["pagebar"] = ".//resources//tmp_pagebar.png",
+                ["werewolfrole"] = ".//resources//tmp_werewolfrole.png",
+                ["version"] = ".//resources//tmp_versionicon.png",
+                ["modules2"] = ".//resources//tmp_moduleicons2.png"
+            };
+            var links = new List<string>
             {
                 ".//resources//tmp_profile.png",
                 ".//resources//tmp_musicplayer.png",
@@ -1463,7 +1486,7 @@ namespace Orikivo.Modules
                 ".//resources//tmp_moduleicons2.png"
             };
 
-            List<string> names = new List<string>
+            var names = new List<string>
             {
                 "profile", "musicplayer", "musicskip", "musicskip2",
                 "levelup", "modules", "loss", "shops", "itemviewer",
@@ -1473,66 +1496,50 @@ namespace Orikivo.Modules
 
             context = (context ?? "").ToLower();
             EmbedBuilder e = EmbedData.DefaultEmbed;
-            string url = null;
+            string url = references.ContainsKey(context) ? references[context] : null;
 
             switch (context)
             {
                 case "profile":
-                    url = links[0];
                     break;
                 case "musicplayer":
-                    url = links[1];
                     break;
                 case "musicskip":
-                    url = links[2];
                     break;
                 case "musicskip2":
-                    url = links[3];
                     break;
                 case "levelup":
-                    url = links[4];
                     break;
                 case "modules":
                     e.WithDescription("orikivo : modules".DiscordBlock());
-                    url = links[5];
                     break;
                 case "loss":
-                    url = links[6];
                     break;
                 case "shops":
-                    url = links[7];
                     break;
                 case "itemviewer":
                     StringBuilder sb = new StringBuilder();
                     sb.AppendLine($"**Wench Fragment** | {EmojiIndex.Balance.Pack(Context.Account)}**100**");
                     e.WithDescription(sb.ToString());
-                    url = links[8];
                     e.WithFooter("One of the pieces used to form a Wench.");
                     break;
                 case "itemviewer2":
                     StringBuilder sb2 = new StringBuilder();
                     sb2.Append($"Wench Fragment | {EmojiIndex.Balance}100 | 8.10");
-                    url = links[8];
                     e.WithFooter(sb2.ToString());
                     break;
                 case "levelicons":
-                    url = links[9];
                     break;
                 case "pagebar":
-                    url = links[10];
                     break;
                 case "werewolfrole":
-                    url = links[11];
                     break;
                 case "version":
-                    url = links[12];
                     break;
                 case "modulesv2":
-                    url = links[13];
-                    break;
-                default:
                     break;
             }
+
             if (url == null)
             {
                 await ReplyAsync($"**Design Templates**\n{names.Conjoin(" | ")}");
@@ -1579,25 +1586,19 @@ namespace Orikivo.Modules
         [Summary("Prevent mentions from bugging you when you need it.")]
         public class Status : ModuleBase<OrikivoCommandContext>
         {
-            private readonly CommandService _service;
-            private readonly DiscordSocketClient _socket;
-            private readonly IConfigurationRoot _config;
             private readonly StatusService _status;
 
-            public Status(CommandService service, IConfigurationRoot config, DiscordSocketClient socket, StatusService status)
+            public Status(StatusService status)
             {
-                _service = service;
-                _config = config;
-                _socket = socket;
                 _status = status;
             }
 
             [Command("")]
             [Summary("Displays your current status, or of the user called.")]
-            public async Task StatusAsync([Remainder]SocketUser userRef = null)
+            public async Task StatusAsync([Remainder]SocketUser target = null)
             {
-                var sender = userRef;
-                if (userRef == null)
+                SocketUser sender = target;
+                if (target == null)
                 {
                     sender = Context.Message.Author;
                 }
@@ -1672,68 +1673,66 @@ namespace Orikivo.Modules
 
         [Command("top")]
         [Summary("View the top 10 users from a specified value.")]
-        public async Task GetTopUsers()
+        public async Task GetTopUsersAsync()
         {
             OldAccount a = Context.Account ?? Context.Data.GetOrAddAccount(Context.User);
-            ICollection<OldAccount> users = Context.Data.Accounts.Values.Where(z => z.Balance > 0).OrderByDescending(n => n.Balance).ToList();
+            IEnumerable<OldAccount> users = Context.Data.Accounts.Values.Where(z => z.Balance > 0).OrderByDescending(n => n.Balance);
 
-            List<EmbedBuilder> embeds = new List<EmbedBuilder>();
-            EmbedBuilder e = new EmbedBuilder();
-            EmbedFooterBuilder f = new EmbedFooterBuilder();
-            e.WithColor(EmbedData.GetColor("origreen"));
-            e.WithTitle($"(Balance) | Top 10");
+            var embed = new EmbedBuilder();
+            embed.WithColor(EmbedData.GetColor("origreen"));
+            embed.WithTitle($"(Balance) | Top 10");
 
-            StringBuilder sb = new StringBuilder();
+            var leaderboard = new StringBuilder();
 
             int x = 1;
-            foreach (var u in users)
+            foreach (OldAccount account in users)
             {
                 if (x > 10)
                 {
                     break;
                 }
 
-                string user = $"{u.GetName()} | {EmojiIndex.Balance.Pack(a)}{u.Balance.ToPlaceValue().MarkdownBold()}";
+                string user = $"{account.GetName()} | {EmojiIndex.Balance.Pack(a)}{account.Balance.ToPlaceValue().MarkdownBold()}";
 
                 switch (x)
                 {
                     case 1:
-                        sb.AppendLine($"**First Place** | {u.GetName()}\n{EmojiIndex.Balance.Pack(a)}{u.Balance.ToPlaceValue().MarkdownBold()}");
+                        leaderboard.AppendLine($"**First Place** | {account.GetName()}\n{EmojiIndex.Balance.Pack(a)}{account.Balance.ToPlaceValue().MarkdownBold()}");
                         break;
                     case 2:
-                        sb.AppendLine($"**Second Place** | {u.GetName()}\n{EmojiIndex.Balance.Pack(a)}{u.Balance.ToPlaceValue().MarkdownBold()}");
+                        leaderboard.AppendLine($"**Second Place** | {account.GetName()}\n{EmojiIndex.Balance.Pack(a)}{account.Balance.ToPlaceValue().MarkdownBold()}");
                         break;
                     case 3:
-                        sb.AppendLine($"**Third Place** | {u.GetName()}\n{EmojiIndex.Balance.Pack(a)}{u.Balance.ToPlaceValue().MarkdownBold()}");
+                        leaderboard.AppendLine($"**Third Place** | {account.GetName()}\n{EmojiIndex.Balance.Pack(a)}{account.Balance.ToPlaceValue().MarkdownBold()}");
                         break;
                     default:
                         if (x == 4)
-                            sb.AppendLine("\n\n**Runnerups**");
-                        sb.AppendLine($"{x.ToPositionValue()} {user}");
+                            leaderboard.AppendLine("\n\n**Runnerups**");
+                        leaderboard.AppendLine($"{x.ToPositionValue()} {user}");
                         break;
                 }
                 x += 1;
             }
 
-            e.WithDescription(sb.ToString());
+            embed.WithDescription(leaderboard.ToString());
 
-            await ReplyAsync(embed: e.Build());
+            await ReplyAsync(embed: embed.Build());
         }
 
         [Command("shops")]
         public async Task GetShops()
         {
-            string list = ShopManager.ShopMap.Shops.Enumerate(x => x.Name).Conjoin("\n");
+            string list = ShopManager.Shops.Shops.Enumerate(x => x.Name).Conjoin("\n");
             await ReplyAsync(string.IsNullOrWhiteSpace(list)? "err":list);
         }
 
         [Command("pawn")]
         public async Task Pawn()
         {
-            OriShop shop = ShopManager.ShopMap.Shops.FirstOrDefault();
+            OriShop shop = ShopManager.Shops.Shops.FirstOrDefault();
             EmbedBuilder eb = Embedder.DefaultEmbed;
             eb.WithTitle(shop.Name);
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendLines(shop.Vendor.Name.MarkdownBold(), shop.Vendor.Responses.OnShopEntry[RandomProvider.Instance.Next(shop.Vendor.Responses.OnShopEntry.Count - 1)]);
             sb.AppendLine($"Loot Group: `{shop.LootGroup}`");
             eb.WithDescription(sb.ToString());
@@ -1768,8 +1767,8 @@ namespace Orikivo.Modules
                 "I haven't seen you in a orica." // orica - the time that was passed when earth died.
             };
 
-            int x = RandomProvider.Instance.Next(1, l.Count + 1);
-            return l[x - 1];
+            int x = RandomProvider.Instance.Next(0, l.Count);
+            return l[x];
         }
 
         public string GetFlavorText()
@@ -1859,9 +1858,9 @@ namespace Orikivo.Modules
         */
         public Embed GenerateAttachmentBox(Bitmap bmp, string path, string file)
         {
-            const string ATTACHMENT = "attachment://{0}";
+            const string attachment = "attachment://{0}";
             EmbedBuilder e = EmbedData.DefaultEmbed;
-            e.WithImageUrl(string.Format(ATTACHMENT, file));
+            e.WithImageUrl(string.Format(attachment, file));
             return e.Build();
         }
         /*
@@ -1924,41 +1923,32 @@ namespace Orikivo.Modules
 
         public string GetActivityStatus(SocketUser sender)
         {
-            UserStatus onlineSet = UserStatus.Online;
-            UserStatus busySet = UserStatus.DoNotDisturb;
-            UserStatus[] idleSet = { UserStatus.Idle, UserStatus.AFK };
-            UserStatus[] offlineSet = { UserStatus.Invisible, UserStatus.Offline };
+            var status = "";
 
-            var activityNullString = "";
-
-            if (offlineSet.Contains(sender.Status))
+            if (sender.Status.EqualsAny(UserStatus.Invisible, UserStatus.Offline))
             {
-                activityNullString = "Offline";
+                status = "Offline";
             }
-            else if (idleSet.Contains(sender.Status))
+            else if (sender.Status.EqualsAny(UserStatus.Idle, UserStatus.AFK))
             {
-                activityNullString = "Idling";
+                status = "Idling";
             }
-            else if (busySet.Equals(sender.Status))
+            else
             {
-                activityNullString = "Busy";
-            }
-            else if (onlineSet.Equals(sender.Status))
-            {
-                activityNullString = "Online";
-            }
-
-            var userActivity = sender.Activity != null ? $"{sender.Activity.Type} {sender.Activity.Name}" : activityNullString;
-
-            if (sender.Activity != null)
-            {
-                if ($"{sender.Activity.Type}".ToLower() == "listening")
+                status = sender.Status switch
                 {
-                    userActivity = $"Listening to {sender.Activity.Name}";
-                }
+                    UserStatus.DoNotDisturb => "Busy",
+                    UserStatus.Online => "Online",
+                    _ => status
+                };
             }
 
-            return userActivity;
+            string activity = sender.Activity != null ? $"{sender.Activity.Type} {sender.Activity.Name}" : status;
+
+            if (sender.Activity?.Type == ActivityType.Listening)
+                activity = $"Listening to {sender.Activity.Name}";
+
+            return activity;
         }
 
         public ulong GetLevel(ulong exp)
@@ -1967,23 +1957,17 @@ namespace Orikivo.Modules
         }
 
         //Build experience, currency, level, and preference table
-        
 
         public Func<OldAccount, object> SetBoardFunc(LeaderboardType type)
         {
-            switch (type)
+            return type switch
             {
-                case LeaderboardType.Midas:
-                    return delegate(OldAccount a) { return a.GimmeStats.GoldenCount; };
-                case LeaderboardType.MostHeld:
-                    return delegate (OldAccount a) { return a.Analytics.MaxHeld; };
-                case LeaderboardType.Expended:
-                    return delegate (OldAccount a) { return a.Analytics.Expended; };
-                case LeaderboardType.Debt:
-                    return delegate (OldAccount a) { return a.Debt; };
-                default:
-                    return delegate (OldAccount a) { return a.Balance; };
-            }
+                LeaderboardType.Midas => a => a.GimmeStats.GoldenCount,
+                LeaderboardType.MostHeld => a => a.Analytics.MaxHeld,
+                LeaderboardType.Expended => a => a.Analytics.Expended,
+                LeaderboardType.Debt => a => a.Debt,
+                _ => a => a.Balance
+            };
         }
 
         public List<OldAccount> GetLeaderboard(LeaderboardType type)
@@ -2000,32 +1984,27 @@ namespace Orikivo.Modules
         public LeaderboardType ReadTypeContext(string ctx)
         {
             ctx = ctx.ToLower();
-            switch(ctx)
+            return ctx switch
             {
-                case "spent": return LeaderboardType.Expended;
-                case "most": return LeaderboardType.MostHeld;
-                case "debt": return LeaderboardType.Debt;
-                case "midas": return LeaderboardType.Midas;
-                default: return LeaderboardType.Balance;
-            }
+                "spent" => LeaderboardType.Expended,
+                "most" => LeaderboardType.MostHeld,
+                "debt" => LeaderboardType.Debt,
+                "midas" => LeaderboardType.Midas,
+                _ => LeaderboardType.Balance,
+            };
         }
 
         public string ReadDataType(OldAccount a, LeaderboardType type)
         {
             OldAccount x = Context.Account;
-            switch(type)
+            return type switch
             {
-                case LeaderboardType.Expended:
-                    return $"{EmojiIndex.Expended.Pack(x)}{a.Analytics.Expended.ToPlaceValue().MarkdownBold()}";
-                case LeaderboardType.MostHeld:
-                    return $"{EmojiIndex.MostHeld.Pack(x)}{a.Analytics.MaxHeld.ToPlaceValue().MarkdownBold()}";
-                case LeaderboardType.Debt:
-                    return $"{EmojiIndex.Debt.Pack(x)}{a.Debt.ToPlaceValue().MarkdownBold()}";
-                case LeaderboardType.Midas:
-                    return $"{EmojiIndex.Midas.Pack(x)}{a.GimmeStats.GoldenCount.ToPlaceValue().MarkdownBold()}";
-                default:
-                    return $"{EmojiIndex.Balance.Pack(x)}{a.Balance.ToPlaceValue().MarkdownBold()}";
-            }
+                LeaderboardType.Expended => $"{EmojiIndex.Expended.Pack(x)}{a.Analytics.Expended.ToPlaceValue().MarkdownBold()}",
+                LeaderboardType.MostHeld => $"{EmojiIndex.MostHeld.Pack(x)}{a.Analytics.MaxHeld.ToPlaceValue().MarkdownBold()}",
+                LeaderboardType.Debt => $"{EmojiIndex.Debt.Pack(x)}{a.Debt.ToPlaceValue().MarkdownBold()}",
+                LeaderboardType.Midas => $"{EmojiIndex.Midas.Pack(x)}{a.GimmeStats.GoldenCount.ToPlaceValue().MarkdownBold()}",
+                _ => $"{EmojiIndex.Balance.Pack(x)}{a.Balance.ToPlaceValue().MarkdownBold()}"
+            };
         }
         /*
         [Command("baseorivatar"), Alias("obfp")]

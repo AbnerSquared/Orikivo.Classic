@@ -9,8 +9,8 @@ namespace Orikivo
         {
             Scale = PixelScale.Set(2); // The scale of the final image.
             PPU = 8; // The amount of pixels per unit. // 4, 6, 8 are the specific.
-            Font = FontManager.FontMap.GetFont(a.Card.FontId);
-            Palette = a.Card.Schema.Palette; // The color palette the image is rendered in.
+            //Font = FontManager.FontMap.GetFont(a.Card.FontId);
+            //Palette = a.Card.Schema.Palette; // The color palette the image is rendered in.
             Padding = 0;
         }
 
@@ -18,8 +18,8 @@ namespace Orikivo
         {
             Scale = PixelScale.Set(2);
             PPU = 8;
-            Font = FontManager.FontMap.GetFont(a.Card.FontId);
-            Palette = a.Card.Schema.Palette;
+            //Font = FontManager.FontMap.GetFont(a.Card.FontId);
+            //Palette = a.Card.Schema.Palette;
             Padding = padding;
         }
 

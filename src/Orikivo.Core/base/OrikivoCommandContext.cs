@@ -50,8 +50,8 @@ namespace Orikivo
             AnalyzerOld analyzer = Account.Analytics;
             analyzer.Debug();
 
-            CommandAnalyzer tmp = analyzer.Search(command).Refresh(Message);
-            analyzer.AnalyzeCommand(command, tmp);
+            //CommandAnalyzer tmp = analyzer.Search(command).Refresh(Message);
+            //analyzer.AnalyzeCommand(command, tmp);
             Data.Update(Account);
         }
     }

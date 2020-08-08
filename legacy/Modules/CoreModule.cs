@@ -1753,7 +1753,7 @@ namespace Orikivo.Modules
             //[Command("hardwareconst"), Alias("hwc")]
             //[Summary("Collect base computer hardware information.")]
             public async Task GetConstantHardwareInformationAsync()
-            {
+            {/*
                 // For Logged information, use Environment.
                 var cpuUsage = new PerformanceCounter("Processor", "% Processor Time", "_Total");
                 var ramUsage = new PerformanceCounter("Memory", "Available MBytes");
@@ -1773,7 +1773,7 @@ namespace Orikivo.Modules
                 var newMessage = false;
 
                 var recentMsgBuild = Context.Channel.GetMessagesAsync(1);
-                var recentMsgList = recentMsgBuild.ToList();
+                var recentMsgList = recentMsgBuild;
 
                 IMessage previousMsg;
                 IMessage currentMsg;
@@ -1819,7 +1819,7 @@ namespace Orikivo.Modules
                     {
                         await checker.ModifyAsync(x => { x.Embed = e.Build(); });
                     }
-                }
+                }*/
             }
 
             [Command("system"), Alias("sys")]

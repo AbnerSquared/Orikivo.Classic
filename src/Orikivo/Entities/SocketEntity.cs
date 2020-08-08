@@ -1,6 +1,5 @@
 ﻿using System.Web;
 using Discord;
-using Discord.Net.Providers.WS4Net;
 using Discord.WebSocket;
 
 namespace Orikivo.Systems.Dependencies.Entities

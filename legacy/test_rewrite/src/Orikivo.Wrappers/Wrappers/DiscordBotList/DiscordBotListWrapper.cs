@@ -22,13 +22,13 @@ namespace Orikivo.Wrappers
         {
             _id = id;
             _token = token;
-            _webClient.WithKey(_token);
+            _webClient.SetAuthorization(_token);
         }
         public LockedDblWrapper(DiscordSocketClient client, string token) : base()
         {
             _id = client.CurrentUser.Id;
             _token = token;
-            _webClient.WithKey(_token);
+            _webClient.SetAuthorization(_token);
         }
 
         public async Task<IDblClient> GetClientAsync()
@@ -51,7 +51,7 @@ namespace Orikivo.Wrappers
             json.Debug("stat info");
             WebResponse result = await _webClient.PostAsync(Builder.WithEndpoint($"bots/{_id}/stats").Clear().Read(), json);
             result.IsSuccess.Debug();
-            result.Content.ReadAsStringAsync().Result.Debug();
+            result.Result.ReadAsStringAsync().Result.Debug();
             "stats updated..".Debug();
         }
 

@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Orikivo.Networking;
 
 namespace Orikivo
 {
@@ -167,10 +168,10 @@ namespace Orikivo
     /// </summary>
     public class Letter
     {
-        public Letter(OldAccount a, string subject, string message = null, LetterAttachment attachment = null)
+        public Letter(Author a, string subject, string message = null, LetterAttachment attachment = null)
         {
             Id = KeyBuilder.Generate(12);
-            Author = new Author(a);
+            Author = a;
             Subject = subject;
             Message = message;
             Attachment = attachment;
@@ -825,8 +826,8 @@ namespace Orikivo
                 }
                 else if (Source.Attachment.IsWritten)
                 {
-                    OriWebClient client = new OriWebClient();
-                    WebStringResponse r = client.RequestStringAsync(Source.Attachment.Url).Result;
+                    var client = new OriWebClient();
+                    WebResponse<string> r = client.RequestAsync<string>(Source.Attachment.Url).ConfigureAwait(false).GetAwaiter().GetResult();
                     if (r.IsSuccess)
                     {
                         "i passed".Debug();
@@ -871,7 +872,7 @@ namespace Orikivo
             FilePath = builder.FilePath;
         }
 
-        public bool CanSend { get { return !string.IsNullOrWhiteSpace(Text) || Embed.Exists(); } }
+        public bool CanSend => !string.IsNullOrWhiteSpace(Text) || Embed.Exists();
 
         public const int MessageLimit = 2000;
         public const int EmbedDescriptionLimit = 2048;
@@ -999,7 +1000,8 @@ namespace Orikivo
 
         public ulong Id { get; set; }
         private string _name;
-        public string Name { get { return _name ?? "Unknown Author"; } set { _name = value; } }
+        public string Name { get => _name ?? "Unknown Author";
+            set { _name = value; } }
     }
 
     /// <summary>

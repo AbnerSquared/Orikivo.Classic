@@ -53,7 +53,7 @@ namespace Orikivo.Systems
 
             provider.GetRequiredService<ConsoleDependency>();
             //provider.GetRequiredService<EventDependency>();
-            provider.GetRequiredService<EventLogger>();
+            //provider.GetRequiredService<EventLogger>();
             await provider.GetRequiredService<NetworkManager>().ConnectAsync();
 
             ReadAssembly(Assembly.GetEntryAssembly());
@@ -91,7 +91,7 @@ namespace Orikivo.Systems
                 .AddSingleton<StatusService>()
                 .AddSingleton<GuildPrefUtility>()
                 .AddSingleton<Exceptions>()
-                .AddSingleton<EventLogger>()
+                //.AddSingleton<EventLogger>()
                 .AddSingleton<Random>()
                 .AddSingleton(Configuration);
         }

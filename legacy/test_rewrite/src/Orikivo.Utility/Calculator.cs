@@ -41,14 +41,20 @@ namespace Orikivo.Utility
         public static double Solve(string expression)
         {
             string pattern = @"(\([A-za-z0-9\^\+\*\-/]+\)|[A-za-z0-9\^\+\*\-/]+)";
-            Regex regex = new Regex(pattern);
+            var regex = new Regex(pattern);
             pattern.Debug();
             if (regex.IsMatch(expression))
             {
                 Debugger.Write("-- Expression found. --");
                 Match match = regex.Match(expression);
-                match.Groups.ForEach(x => x.Debug($"Index {x.Index}; Length {x.Length}"));
-                IEnumerable<string> values = match.Groups.Enumerate(x => x.Value).Skip(1);
+                //match.Groups.ForEach(x => x.Debug($"Index {x.Index}; Length {x.Length}"));
+
+                foreach (Group group in match.Groups)
+                {
+                    group.Debug($"Index {group.Index}; Length {group.Length}");
+                }
+
+                IEnumerable<string> values = match.Groups.Values.Select(x => x.Value).Skip(1);
                 foreach (string value in values)
                 {
                     string s = value.TryUnwrap("(", ")");
@@ -62,8 +68,8 @@ namespace Orikivo.Utility
                     {
                         Debugger.Write("-- Values found. --");
                         Match match4 = regex4.Match(s);
-                        match4.Groups.ForEach(x => x.Debug($"Index {x.Index}; Length {x.Length}"));
-                        IEnumerable<string> values4 = match4.Groups.Enumerate(x => x.Value).Skip(1);
+                        //match4.Groups.ForEach(x => x.Debug($"Index {x.Index}; Length {x.Length}"));
+                        IEnumerable<string> values4 = match4.Groups.Values.Select(x => x.Value).Skip(1);
                         foreach(string value4 in values4)
                         {
 

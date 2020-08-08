@@ -305,12 +305,12 @@ namespace Orikivo.Modules
             [Summary("Returns a summary of the derivative of the base, x-value, and exponent.")]
             public async Task DeriveAsync(double scalar, double value, double exponent)
             {
-                OldCalculator.Derive(scalar, value, exponent, out double b, out double x, out double n, out double r);
+                //OldCalculator.Derive(scalar, value, exponent, out double b, out double x, out double n, out double r);
                 string s =
-                $"derivative_base | (b·n){VariableIndex.X}{"n-1".ToSuperscript()}\n" +
-                $"base | {scalar}·{exponent} | {b.ToPlaceValue()}\n" +
-                $"exponent |  {exponent}-1 | {n.ToPlaceValue()}\n" +
-                $"result | {b}·{x}{n.ToPlaceValue().ToSuperscript()} | {r.ToPlaceValue()}";
+                    $"derivative_base | (b·n){VariableIndex.X}{"n-1".ToSuperscript()}\n";
+                //$"base | {scalar}·{exponent} | {b.ToPlaceValue()}\n" +
+                //$"exponent |  {exponent}-1 | {n.ToPlaceValue()}\n" +
+                //$"result | {b}·{x}{n.ToPlaceValue().ToSuperscript()} | {r.ToPlaceValue()}";
                 await ReplyAsync(s.DiscordBlock());
             }
 
@@ -318,12 +318,12 @@ namespace Orikivo.Modules
             [Summary("Returns a summary of the integral of the base, x-value, and exponent.")]
             public async Task IntegrateAsync(double scalar, double value, double exponent)
             {
-                OldCalculator.Integrate(scalar, value, exponent, out double b, out double x, out double n, out double r);
+                //OldCalculator.Integrate(scalar, value, exponent, out double b, out double x, out double n, out double r);
                 string s =
-                $"integral_base | b{VariableIndex.X}{"n+1".ToSuperscript()}/n+1\n" +
-                $"exponent | {exponent}+1 | {n}\n" +
-                $"base | {b}\n" +
-                $"result | {b}·{x}{n.ToPlaceValue().ToSuperscript()}/{n} | {r.ToPlaceValue()}";
+                    $"integral_base | b{VariableIndex.X}{"n+1".ToSuperscript()}/n+1\n";
+                //$"exponent | {exponent}+1 | {n}\n" +
+                //$"base | {b}\n" +
+                //$"result | {b}·{x}{n.ToPlaceValue().ToSuperscript()}/{n} | {r.ToPlaceValue()}";
                 await ReplyAsync(s.DiscordBlock());
             }
 

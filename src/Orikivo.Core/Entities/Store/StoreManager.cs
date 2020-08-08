@@ -44,8 +44,8 @@ namespace Orikivo
         private void ClearDebt(OldAccount a, OrikivoCommandContext Context)
         {
             Console.WriteLine("I AM A POCKET LAWYER AND IM HERE TO HELP");
-            OldMail m = new OldMail("Mr. Pocket", "I'm Here to Help", new CompactMessage("I have contacted ORS, and they have agreed to let me clear your debt. I hope that you'll do better next time."));
-            m.SendAsync(a, Context.Client);
+            //OldMail m = new OldMail("Mr. Pocket", "I'm Here to Help", new CompactMessage("I have contacted ORS, and they have agreed to let me clear your debt. I hope that you'll do better next time."));
+            //m.SendAsync(a, Context.Client);
             Context.Data.Update(a);
             a.ClearDebt();
             a.Save();
@@ -66,7 +66,7 @@ namespace Orikivo
 
             Consumables = new List<ActionItem>();
 
-            ActionItem pocketLawyer = new ActionItem("Pocket Lawyer", 40, "Helps you when getting out of that tough debt.", ActionType.ClearDebt);
+            var pocketLawyer = new ActionItem("Pocket Lawyer", 40, "Helps you when getting out of that tough debt.", ActionType.ClearDebt);
 
             Consumables.Add(pocketLawyer);
         }

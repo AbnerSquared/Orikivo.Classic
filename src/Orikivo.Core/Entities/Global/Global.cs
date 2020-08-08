@@ -401,23 +401,23 @@ namespace Orikivo
         {
             ulong reward = 100;
             string b = $"The report that was accepted ({report.Id}) has been built on {changelog.Name} ({changelog.Id}). Thank you for your input!\nYou have been awarded {EmojiIndex.Balance}{reward.ToPlaceValue().MarkdownBold()} for your time. Keep up the good work.";
-            CompactMessage msg = new CompactMessage(b);
-            OldMail m = new OldMail("Orikivo", $"({report.Id}) has been built!", msg);
-            await m.SendAsync(a, Context.Client);
+            //CompactMessage msg = new CompactMessage(b);
+            //OldMail m = new OldMail("Orikivo", $"({report.Id}) has been built!", msg);
+            //await m.SendAsync(a, Context.Client);
         }
 
         public async Task NotifyAcceptedReportAsync(OldAccount a, OrikivoCommandContext Context, Report report)
         {
-            CompactMessage msg = new CompactMessage($"The report you submitted ({report.Id}) has been accepted!\nYou will be notified upon the completion of your input.\nThank you for your time!");
-            OldMail m = new OldMail("Orikivo", "Your report has been accepted!", msg);
-            await m.SendAsync(a, Context.Client);
+            //CompactMessage msg = new CompactMessage($"The report you submitted ({report.Id}) has been accepted!\nYou will be notified upon the completion of your input.\nThank you for your time!");
+            //OldMail m = new OldMail("Orikivo", "Your report has been accepted!", msg);
+            //await m.SendAsync(a, Context.Client);
         }
 
         public async Task NotifyDeclinedReportAsync(OldAccount a, OrikivoCommandContext Context, Report report, string reason)
         {
-            CompactMessage msg = new CompactMessage($"The report you submitted ({report.Id}) has been declined. Here's what the director of the motion stated:```{reason ?? "It failed to meet the criteria of an report."}```");
-            OldMail m = new OldMail("Orikivo", "Your report has been declined.", msg);
-            await m.SendAsync(a, Context.Client);
+            //CompactMessage msg = new CompactMessage($"The report you submitted ({report.Id}) has been declined. Here's what the director of the motion stated:```{reason ?? "It failed to meet the criteria of an report."}```");
+            //OldMail m = new OldMail("Orikivo", "Your report has been declined.", msg);
+            //await m.SendAsync(a, Context.Client);
         }
 
         public async Task CompleteReport(OldAccount a, OrikivoCommandContext Context, ulong id, ulong changelogId)
