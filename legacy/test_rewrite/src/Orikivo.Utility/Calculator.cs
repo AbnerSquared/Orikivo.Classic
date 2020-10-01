@@ -9,7 +9,7 @@ namespace Orikivo.Utility
     {
         public static double RangeShift(int value, int oldMin, int oldMax, int newMin, int newMax)
             => (((value - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
-            
+
         public static double RangeShift(int value, Range from, Range to)
             => (((value - from.Min) * to.Length) / from.Length) + to.Min;
 
