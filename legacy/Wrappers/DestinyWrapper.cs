@@ -43,7 +43,7 @@ namespace Orikivo.Wrappers
         }
 
         /*
-         
+
         /Destiny2/ {membershipType} /Profile / {membershipId} /
          Responses:
             ErrorCode
@@ -58,8 +58,8 @@ namespace Orikivo.Wrappers
 
             DetailedErrorTrace
                 Type (string)
-            
-         
+
+
          */
     }
 
@@ -92,11 +92,6 @@ namespace Orikivo.Wrappers
         [JsonProperty("profile")]
         public DestinySingleProfileComponent Profile { get; set; }
 
-
-    }
-
-    public class DestinySingleProfileProgressionComponent
-    {
 
     }
 
@@ -175,26 +170,6 @@ namespace Orikivo.Wrappers
 
 
 
-
-    }
-
-    public class DestinySinglePlugSetsComponent
-    {
-
-    }
-
-    public class DestinyPlugSetsComponent
-    {
-
-    }
-
-    public class DestinySingleKiosksComponent
-    {
-
-    }
-
-    public class DestinyKiosksComponent
-    {
 
     }
 
@@ -501,11 +476,6 @@ namespace Orikivo.Wrappers
     }
 
     // I'm gonna cry myself to sleep ngl
-
-    public class DestinyItemQualityBlockDefinition
-    {
-
-    }
 
     // complete?
     public class DestinyItemPreviewBlockDefinition
@@ -1035,31 +1005,11 @@ namespace Orikivo.Wrappers
 
     }
 
-    public class DestinySocketTypeScalarMaterialRequirementEntry
-    {
-
-    }
-
-    public class DestinyPlugWhitelistEntryDefinition
-    {
-
-    }
-
-    public class DestinyInsertPlugActionDefinition
-    {
-
-    }
-
     // complete.
     public class DestinyItemCreationEntryLevelDefinition
     {
         [JsonProperty("level")]
         public int Level { get; set; }
-    }
-
-    public class DestinyVendorItemQuantity
-    {
-
     }
 
     // complete.
@@ -1246,21 +1196,6 @@ namespace Orikivo.Wrappers
     {
         [JsonProperty("displayProperties")]
         public DestinyDisplayPropertiesDefinition DisplayProperties { get; set; }
-    }
-
-    public class DestinyActivityGraphListEntryDefinition
-    {
-
-    }
-
-    public class DestinyActivityDefinition
-    {
-
-    }
-
-    public class DestinyPlaceDefinition
-    {
-
     }
 
     // complete?

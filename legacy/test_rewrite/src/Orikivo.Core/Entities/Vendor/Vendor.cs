@@ -19,6 +19,4 @@ namespace Orikivo
         // private List<VendorInteraction> Interactions {get; private set;} // keep track of this on the user.
         public VendorSprite Sprite {get; private set;} // the sprite of the vendor.
     }
-
-    public class VendorDesignBlock { }
 }
