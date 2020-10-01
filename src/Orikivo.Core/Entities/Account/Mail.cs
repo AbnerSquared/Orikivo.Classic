@@ -972,7 +972,6 @@ namespace Orikivo
     /// </summary>
     public class Author
     {
-        public Author() { }
 
         [JsonConstructor]
         public Author(ulong id, string name)
@@ -1009,7 +1008,6 @@ namespace Orikivo
     /// </summary>
     public class Interpreter : IInterpreter
     {
-        public Interpreter() { }
         public Interpreter(Type type, string name, string flavortext = null, string description = null, string value = null, Emoji icon = null, ulong? id = null)
         {
             Type = type;

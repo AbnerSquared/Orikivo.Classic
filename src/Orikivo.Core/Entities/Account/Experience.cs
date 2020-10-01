@@ -84,7 +84,6 @@ namespace Orikivo
 
     public class LocalData : IData
     {
-        public LocalData() {}
 
         public int Level { get; set; } = 0;
         public double RawLevel { get; set; } = 0;
@@ -109,7 +108,6 @@ namespace Orikivo
 
     public class GlobalData : IData
     {
-        public GlobalData() {}
 
         public GlobalData(SocketGuild g)
         {

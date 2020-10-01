@@ -56,7 +56,6 @@ namespace Orikivo
 
     public class OldCardColorScheme
     {
-        public OldCardColorScheme() { }
         public OldCardColorScheme(string name, ulong cost, Color[] palette)
         {
             Name = name ?? "new-scheme";
