@@ -290,9 +290,9 @@ namespace Orikivo.Systems.Services
                     {
                         if (primaryLength + name.Length <= firstActivityLength)
                         {
-                            if (string.Equals(name, "the", StringComparison.InvariantCultureIgnoreCase))
+                            if (string.Equals(name, "the", StringComparison.OrdinalIgnoreCase))
                             {
-                                if (activityList.Contains(primaryGameName, StringComparer.InvariantCultureIgnoreCase))
+                                if (activityList.Contains(primaryGameName, StringComparer.OrdinalIgnoreCase))
                                 {
                                     primaryGameName += name + Strings.Space(1);
                                     primaryLength += name.Length;
