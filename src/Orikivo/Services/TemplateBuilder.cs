@@ -370,7 +370,7 @@ namespace Orikivo.Systems.Services
             return (int)Math.Ceiling(Math.Log10(number));
         }
 
-        private static ulong GetNumberSpesificDigit(ulong number, int numberLength, int index)
+        private static ulong GetNumberSpecificDigit(ulong number, int numberLength, int index)
         {
             return number / (ulong)Math.Pow(10, numberLength - index) % 10;
         }
