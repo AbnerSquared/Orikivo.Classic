@@ -5,7 +5,6 @@ namespace Orikivo
 {
     public class SchemeIndex
     {
-        public SchemeIndex() {}
 
         //public CardColorScheme Baseline = new CardColorScheme("Baseline", 50, ColorScheme.Default);
 

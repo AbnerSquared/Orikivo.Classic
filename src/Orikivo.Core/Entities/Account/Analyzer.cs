@@ -8,7 +8,6 @@ namespace Orikivo
 {
     public class AnalyzerOld
     {
-        public AnalyzerOld() {}
 
         /// <summary>
         /// Holds the total amount of money this account has spent.
