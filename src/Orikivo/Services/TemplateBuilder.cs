@@ -332,7 +332,7 @@ namespace Orikivo.Systems.Services
                 }
 
 
-                if (char.IsWhiteSpace(secondaryGameName.FirstOrDefault()))
+                if (!string.IsNullOrWhiteSpace(secondaryGameName))
                 {
                     secondaryGameName = secondaryGameName.Remove(0, 1);
                 }
