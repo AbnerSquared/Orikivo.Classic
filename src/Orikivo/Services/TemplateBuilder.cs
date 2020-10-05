@@ -367,6 +367,7 @@ namespace Orikivo.Systems.Services
                 new Point(currencyPoint.X, levelCurrencyY));
             //TextConfiguration.PixelateText(userName, 40, 6, setSize, templateBuilder);
             //TextConfiguration.PixelateText(userActivity, 40, 16, "s", templateBuilder);
+
             return templateBuilder.Color(options.Palette);
         }
 
