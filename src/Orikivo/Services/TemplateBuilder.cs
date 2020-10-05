@@ -178,9 +178,9 @@ namespace Orikivo.Systems.Services
             {
                 for (var currencyCount = 0; currencyCount < currencyDetectDisplayWidth; currencyCount++)
                 {
-                    currencyString += $"{GetNumberSpesificDigit(userCurrency, currencyCount, userCurrencyDigitCount)}";
+                    currencyString += $"{GetNumberSpecificDigit(userCurrency, currencyCount, userCurrencyDigitCount)}";
                 }
-                if (!(GetNumberSpesificDigit(userCurrency, currencyString.Length, userCurrencyDigitCount) == 0))
+                if (!(GetNumberSpecificDigit(userCurrency, currencyString.Length, userCurrencyDigitCount) == 0))
                 {
                     currencyString += $".0";
                 }
