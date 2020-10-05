@@ -33,8 +33,14 @@ namespace Orikivo.Systems.Services
             return templateBuilder;
         }
 
-        public static Bitmap BuildNewProfileBaseTemplate(Bitmap userAvatar,string userName, string userStatus, string userActivity,
-            int userLevel,ulong userCurrency,ulong userExp, ulong nextLevelExp, PixelRenderingOptions options)
+        public static Bitmap BuildNewProfileBaseTemplate
+        (Bitmap userAvatar,
+            string userName,
+            string userStatus,
+            string userActivity,
+            int userLevel,
+            ulong userCurrency,
+            ulong userExp, ulong nextLevelExp, PixelRenderingOptions options)
         {    
             #region Debug
             userName.Debug();
