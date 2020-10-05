@@ -277,7 +277,7 @@ namespace Orikivo.Systems.Services
                     {
                         if (secondaryLength + name.Length <= secondActivityLength)
                         {
-                            secondaryGameName += name + Strings.Space(1);
+                            secondaryGameName += name + " ";
                             secondaryLength += name.Length;
                         }
                         else
@@ -294,24 +294,24 @@ namespace Orikivo.Systems.Services
                             {
                                 if (activityList.Contains(primaryGameName, StringComparer.OrdinalIgnoreCase))
                                 {
-                                    primaryGameName += name + Strings.Space(1);
+                                    primaryGameName += name + " ";
                                     primaryLength += name.Length;
                                 }
                                 else
                                 {
-                                    secondaryGameName += name + Strings.Space(1);
+                                    secondaryGameName += name + " ";
                                     primaryLength += firstActivityLength - primaryLength;
                                     secondaryLength += name.Length;
                                 }
                             }
                             else if (name.EndsWith(':'))
                             {
-                                primaryGameName += name + Strings.Space(1);
+                                primaryGameName += name + " ";
                                 primaryLength += firstActivityLength - primaryLength;
                             }
                             else
                             {
-                                primaryGameName += name + Strings.Space(1);
+                                primaryGameName += name + " ";
                                 primaryLength += name.Length;
                             }
                         }
@@ -319,7 +319,7 @@ namespace Orikivo.Systems.Services
                         {
                             if (secondaryLength + name.Length <= secondActivityLength)
                             {
-                                secondaryGameName += name + Strings.Space(1);
+                                secondaryGameName += name + " ";
                                 secondaryLength += name.Length;
                             }
                             else
@@ -382,3 +382,4 @@ namespace Orikivo.Systems.Services
         }
     }
 }
+
