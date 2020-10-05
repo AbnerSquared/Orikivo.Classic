@@ -331,7 +331,7 @@ namespace Orikivo.Systems.Services
                 }
 
 
-                if (!string.IsNullOrWhiteSpace(secondaryGameName))
+                if (secondaryGameName.StartsWith(' '))
                 {
                     secondaryGameName = secondaryGameName.Remove(0, 1);
                 }
