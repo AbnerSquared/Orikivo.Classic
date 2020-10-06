@@ -60,74 +60,19 @@ namespace Orikivo.Systems.Services
                 graphics.DrawImage(avatar, avatarPosition);
                 avatar.Dispose();
 
-
-                var largeLimit = 17;
-                var mediumLimit = 22;
-                var smallLimit = 31;
-                //var extraSmallLimit = 37;
-                var setSize = "l";
-                var sizeSpacing = 8;
-                if (userName.Length > largeLimit)
-                {
-                    setSize = "m";
-                    sizeSpacing = 6;
-                    if (userName.Length > mediumLimit)
-                    {
-                        setSize = "s";
-                        sizeSpacing = 4;
-                        if (userName.Length > smallLimit)
-                        {
-                            setSize = "xs";
-                            sizeSpacing = 3;
-                        }
-                    }
-                }
+                var sizeSpacing = GetSizeSpacing(userName);
 
                 var statusPos = 0;
                 var statuses = new Bitmap(statusType);
                 var statusBarPosition = new Rectangle(0, statusPos, statuses.Width, 2);
                 var statusBar = statuses.Clone(statusBarPosition, statuses.PixelFormat);
                 var statusPlacement = new Point(6, 39);
-
-                if (userStatus.ToLower() == "online")
-                {
-                    statusPos = 0;
-                    statusBarPosition = new Rectangle(0, statusPos, statuses.Width, 2);
-                    statusBar = statuses.Clone(statusBarPosition, statuses.PixelFormat);
-                    var placeStatus = new Rectangle(statusPlacement, new Size(statusBar.Width, statusBar.Height));
-                    graphics.SetClip(placeStatus);
-                    graphics.DrawImage(statusBar, placeStatus);
-                }
-                else if (userStatus.ToLower() == "idle" || userStatus.ToLower() == "afk")
-                {
-                    statusPos = 2;
-                    statusBarPosition = new Rectangle(0, statusPos, statuses.Width, 2);
-                    statusBar = statuses.Clone(statusBarPosition, statuses.PixelFormat);
-                    var placeStatus = new Rectangle(statusPlacement, new Size(statusBar.Width, statusBar.Height));
-                    graphics.SetClip(placeStatus);
-                    graphics.DrawImage(statusBar, placeStatus);
-                }
-                else if (userStatus.ToLower() == "donotdisturb")
-                {
-                    statusPos = 4;
-                    statusBarPosition = new Rectangle(0, statusPos, statuses.Width, 2);
-                    statusBar = statuses.Clone(statusBarPosition, statuses.PixelFormat);
-                    var placeStatus = new Rectangle(statusPlacement, new Size(statusBar.Width, statusBar.Height));
-                    graphics.SetClip(placeStatus);
-                    graphics.DrawImage(statusBar, placeStatus);
-                }
-                else if (userStatus.ToLower() == "offline" || userStatus.ToLower() == "invisible")
-                {
-                    statusPos = 6;
-                    statusBarPosition = new Rectangle(0, statusPos, statuses.Width, 2);
-                    statusBar = statuses.Clone(statusBarPosition, statuses.PixelFormat);
-                    var placeStatus = new Rectangle(statusPlacement, new Size(statusBar.Width, statusBar.Height));
-                    graphics.SetClip(placeStatus);
-                    graphics.DrawImage(statusBar, placeStatus);
-                }
+                
+                statusPos = GetStatusPos(userStatus);
+                statusBar = GetStatusBar(statusPos, statuses);
+                DrawARectangle(graphics, statusPlacement, statusBar);
 
                 var iconPos = 0;
-                //var levelLength = 0;
                 var icons = new Bitmap(iconSet);
                 
                 var iconLevelPosition = new Rectangle(iconPos, 0, 4, icons.Height);
@@ -137,8 +82,7 @@ namespace Orikivo.Systems.Services
 
                 var actDetect = userActivity.Split(' ');
                 var baseSpacer = 6 + sizeSpacing + 2;
-                //var baseActivityLength = 32;
-
+                
 
                 var firstActivityLength = 32 - actDetect[0].Length;
                 var secondActivityLength = 32;
@@ -186,14 +130,9 @@ namespace Orikivo.Systems.Services
 
                 currencyPoint.X = 40 + (levelWidth) + 8;
 
-
-
                 levelString = $"{userLevel}";
-
                 
-
-
-                //var currencyPos = 0;
+                
                 var currencyTypes = new Bitmap(currencyAmountSet);
                 var currencyWidth = 10;
                 var currencyTypePos = 0;
@@ -204,18 +143,14 @@ namespace Orikivo.Systems.Services
                     currencyTypePoint.Y += 5;
                 }
 
-                if ( userCurrency > 999)
+                if (userCurrency > 999)
                 {
-                    //var segmentLimit = 0;
                     var currencyDetectDisplayWidth = 0;
                     var splitIntegers = userCurrency.ToString().ToCharArray();
 
                     //thousand 4-6 : 0,000 > 000,000
                     //million 7-9 : 0,000,000 > 000,000,000
-
-
-
-
+                    
                     if (userCurrency > 999999999)
                     {
                         if (splitIntegers.Length == 10)
@@ -248,8 +183,7 @@ namespace Orikivo.Systems.Services
                         {
                             currencyDetectDisplayWidth = 3;
                         }
-
-
+                        
                         currencyWidth = 10;
                         currencyTypePos = 10;
                         currencyTypePosition = new Rectangle(currencyTypePos, 0, currencyWidth, currencyTypes.Height);
@@ -321,7 +255,6 @@ namespace Orikivo.Systems.Services
                 graphics.DrawImage(levelIcon, levelPlacement);
                 levelPoint.X += 5;
 
-
                 graphics.SetClip(currencyPlacement);
                 graphics.DrawImage(currencyIcon, currencyPlacement);
                 currencyPoint.X += 9;
@@ -369,9 +302,9 @@ namespace Orikivo.Systems.Services
                     graphics.FillRectangle(fillBrush, fillExpPlacement);
                 }
 
-                    graphics.ResetClip();
+                graphics.ResetClip();
 
-                    var gameNameSet = userActivity.Split(' ');
+                var gameNameSet = userActivity.Split(' ');
                 var primaryGameName = "";
                 var secondaryGameName = "";
                 var primaryLength = 0;
@@ -383,77 +316,73 @@ namespace Orikivo.Systems.Services
                             "streaming ",
                             "listening to ",
                             "watching "
-                        };
+                };
 
                 if (gameNameCharacters.Length >= firstActivityLength)
-                    {
-                    
-
-
+                {
                     foreach (var name in gameNameSet)
                     {
-                            if (primaryLength >= firstActivityLength)
+                        if (primaryLength >= firstActivityLength)
+                        {
+                            if (secondaryLength + name.Length <= secondActivityLength)
+                            {
+                                secondaryGameName += name + " ";
+                                secondaryLength += name.Length;
+                            }
+                            else
+                            {
+                                secondaryGameName += "...";
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (primaryLength + name.Length <= firstActivityLength)
+                            {
+                                if (name.ToLower().Equals("the"))
+                                {
+                                    var actCheck = primaryGameName.ToLower();
+                                    if (!activityList.Contains(actCheck))
+                                    {
+
+                                        secondaryGameName += name + " ";
+                                        primaryLength += firstActivityLength - primaryLength;
+                                        secondaryLength += name.Length;
+                                    }
+                                    else
+                                    {
+                                        primaryGameName += name + " ";
+                                        primaryLength += name.Length;
+                                    }
+                                }
+                                else if (name.EndsWith(':'))
+                                {
+                                    primaryGameName += name + " ";
+                                    primaryLength += firstActivityLength - primaryLength;
+                                }
+                                else
+                                {
+
+                                    primaryGameName += name + " ";
+                                    primaryLength += name.Length;
+                                }
+                            }
+                            else
                             {
                                 if (secondaryLength + name.Length <= secondActivityLength)
                                 {
                                     secondaryGameName += name + " ";
                                     secondaryLength += name.Length;
-                            }
+                                }
                                 else
                                 {
                                     secondaryGameName += "...";
                                     break;
-                            }
-
-                                
-                            }
-                            else
-                            {
-                                if (primaryLength + name.Length <= firstActivityLength)
-                                {
-                                    if (name.ToLower().Equals("the"))
-                                    {
-                                        var actCheck = primaryGameName.ToLower();
-                                        if (!activityList.Contains(actCheck))
-                                        {
-                                           
-                                            secondaryGameName += name + " ";
-                                            primaryLength += firstActivityLength - primaryLength;
-                                            secondaryLength += name.Length;
-                                        }
-                                        else
-                                        {
-                                            primaryGameName += name + " ";
-                                            primaryLength += name.Length;
-                                    }
-                                    }
-                                    else if (name.EndsWith(':'))
-                                    {
-                                        primaryGameName += name + " ";
-                                        primaryLength += firstActivityLength - primaryLength;
-                                    }
-                                    else {
-
-                                        primaryGameName += name + " ";
-                                        primaryLength += name.Length;
-                                    }
                                 }
-                                else
-                                {
-                                    if (secondaryLength + name.Length <= secondActivityLength)
-                                    {
-                                        secondaryGameName += name + " ";
-                                        secondaryLength += name.Length;
-                                }
-                                    else
-                                    {
-                                        secondaryGameName += "...";
-                                        break;
-                                    }
 
-                                    
-                                }
+
                             }
+                        }
                     }
 
                         
@@ -461,17 +390,7 @@ namespace Orikivo.Systems.Services
                     {
                         secondaryGameName = secondaryGameName.Remove(0, 1);
                     }
-                    //TextConfiguration.PixelateText(primaryGameName, 40, baseSpacer, "s", templateBuilder);
-                    //TextConfiguration.PixelateText(secondaryGameName, 40, baseSpacer + 5, "s", templateBuilder)
                 }
-
-
-
-
-                //Bitmap lstr = PixelEngine.RenderString(levelString, options);
-
-                //TextConfiguration.PixelateText(levelString, levelPoint.X, levelPoint.Y, "l", templateBuilder);
-                //TextConfiguration.PixelateText(currencyString, currencyPoint.X, currencyPoint.Y, "l", templateBuilder);
 
                 var un = PixelEngine.RenderString(userName, options);
                 graphics.DrawImage(un, new Point(40, 6));
@@ -499,14 +418,72 @@ namespace Orikivo.Systems.Services
                 graphics.DrawImage(lvl, new Point(levelPoint.X, levelCurrencyY));
                 var cur = PixelEngine.RenderString(currencyString, options, 0);
                 graphics.DrawImage(cur, new Point(currencyPoint.X, levelCurrencyY));
-
-
-                //TextConfiguration.PixelateText(userName, 40, 6, setSize, templateBuilder);
-                //TextConfiguration.PixelateText(userActivity, 40, 16, "s", templateBuilder);
+                
             }
 
 
             return templateBuilder.Color(options.Palette);
+        }
+
+        private static int GetSizeSpacing(string userName)
+        {
+            var largeLimit = 17;
+            var mediumLimit = 22;
+            var smallLimit = 31;
+            var sizeSpacing = 8;
+
+            if (userName.Length > smallLimit)
+            {
+                sizeSpacing = 3;
+            }
+            else if (userName.Length > mediumLimit)
+            {
+                sizeSpacing = 4;
+            }
+            else if (userName.Length > largeLimit)
+            {
+                sizeSpacing = 6;
+            }
+
+            return sizeSpacing;
+        }
+        private static int GetStatusPos(string userStatus)
+        {
+            int statusPos;
+            switch (userStatus?.ToLower())
+            {
+                case "online":
+                    statusPos = 0;
+                    break;
+                case "idle":
+                case "afk":
+                    statusPos = 2;
+                    break;
+                case "donotdisturb":
+                    statusPos = 4;
+                    break;
+                case "offline":
+                case "invisible":
+                    statusPos = 6;
+                    break;
+                default:
+                    statusPos = 0;
+                    break;
+            }
+
+            return statusPos;
+        }
+        private static Bitmap GetStatusBar(int statusPos,Bitmap statuses)
+        {
+            var statusBarPosition = new Rectangle(0, statusPos, statuses.Width, 2);
+            return statuses.Clone(statusBarPosition, statuses.PixelFormat);
+        }
+
+        private static void DrawARectangle(Graphics graphics, Point statusPlacement, Bitmap statusBar)
+        {
+            var placeStatus = new Rectangle(statusPlacement, new Size(statusBar.Width, statusBar.Height));
+            graphics.SetClip(placeStatus);
+            graphics.DrawImage(statusBar, placeStatus);
         }
     }
 }
