@@ -4,26 +4,6 @@ using System.Collections.Generic;
 
 namespace Orikivo
 {
-    public class IconManager
-    {
-        // the collection of icons orikivo should use when displaying emojis.
-    }
-
-    public class ServerEvents
-    {
-        // keeps track of server events
-    }
-
-    public class UserEvents
-    {
-        // keeps track of personal events
-    }
-
-    public class Event
-    {
-
-    }
-
     public class ServerConfig
     {
         // This edits how orikivo should run

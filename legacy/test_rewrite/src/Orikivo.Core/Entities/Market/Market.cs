@@ -15,9 +15,4 @@ namespace Orikivo
         public MarketStock Stock {get; private set;} // the collection of items current in the market, alongside count.
         public DateTime TimeLeft {get;} // the time left in the store.
     }
-
-    public class MarketScheduleBlock { }
-    public class MarketCharacteristicBlock { }
-    public class MarketDesignBlock { }
-    
 }

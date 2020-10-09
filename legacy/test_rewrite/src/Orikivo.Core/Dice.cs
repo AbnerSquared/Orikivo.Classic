@@ -9,10 +9,6 @@ namespace Orikivo
     /// <summary>
     /// Represents a collection of Dice.
     /// </summary>
-    public class DiceBatch
-    {
-
-    }
 
     /// <summary>
     /// Represents an object used to randomly select numbers.
@@ -160,7 +156,7 @@ namespace Orikivo
         /// </summary>
         public ulong Max { get; } // max roll possible
 
-        
+
         /// <summary>
         /// Makes sure the dice roll limit is in range.
         /// </summary>
