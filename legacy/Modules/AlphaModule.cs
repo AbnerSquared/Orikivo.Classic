@@ -1595,7 +1595,7 @@ namespace Orikivo.Modules
 
             [Command("")]
             [Summary("Displays your current status, or of the user called.")]
-            public async Task StatusAsync([Remainder]SocketUser target = null)
+            public async Task StatusAsync([Remainder] SocketUser target = null)
             {
                 SocketUser sender = target;
                 if (target == null)
@@ -1615,12 +1615,12 @@ namespace Orikivo.Modules
 
             [Command("set")]
             [Summary("Set your status with an optional message.")]
-            public async Task StatusSet(string statusType, [Remainder]string message = "")
+            public async Task StatusSet(string statusType, [Remainder] string message = "")
             {
                 await _status.SetStatus(Context, statusType, message);
             }
-        }
-
+        }  
+          
 
         [Command("leaderboard"), Alias("lb"), Priority(1)]
         [Summary("Retrieve a leaderboard with a specified value.")]

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Discord;
+﻿using System.Threading.Tasks;
 using Discord.Commands;
-using Discord.WebSocket;
-using Orikivo.Utility;
 
 namespace Orikivo.Modules
 {
@@ -31,24 +25,6 @@ namespace Orikivo.Modules
             {
 
             }
-        }
-    }
-
-    public static class PlazaService
-    {
-        // user can dropoff items
-        // user can pickup items
-
-        // check user inventory..?
-        public static async Task CheckStorageAsync()
-        {
-
-        }
-
-        public static async Task CheckStoresAsync(OrikivoCommandContext Context)
-        {
-            MessageBuilder mb = ShopSystem.CheckStores();
-            await Context.Channel.SendSourceAsync(mb.Build());
-        }
+        }    
     }
 }

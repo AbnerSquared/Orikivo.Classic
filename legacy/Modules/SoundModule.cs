@@ -73,29 +73,29 @@ namespace Orikivo.Modules
             await _audio.LeaveVoiceChannel(Context.Guild);
         }
 
-    [DontAutoLoad]
-    [Group("music"), Name("Music"), Alias("m")]
-    [Summary("A sub-module that controls all audio related dependencies using the new system.")]
-    public class Music : ModuleBase<ICommandContext>
-    {
-        private readonly CommandService _service;
-        private readonly AudioDependency _audio;
-        private readonly DiscordSocketClient _socket;
-        private readonly IConfigurationRoot _config;
-        private readonly CancellationTokenSource _token;
-        public Music(CommandService service, DiscordSocketClient socket, AudioDependency audio,
-            IConfigurationRoot config, CancellationTokenSource token)
+        [DontAutoLoad]
+        [Group("music"), Name("Music"), Alias("m")]
+        [Summary("A sub-module that controls all audio related dependencies using the new system.")]
+        public class Music : ModuleBase<ICommandContext>
         {
-            _service = service;
-            _socket = socket;
-            _audio = audio;
-            _config = config;
-            _token = token;
-        }
+            private readonly CommandService _service;
+            private readonly AudioDependency _audio;
+            private readonly DiscordSocketClient _socket;
+            private readonly IConfigurationRoot _config;
+            private readonly CancellationTokenSource _token;
+            public Music(CommandService service, DiscordSocketClient socket, AudioDependency audio,
+                IConfigurationRoot config, CancellationTokenSource token)
+            {
+                _service = service;
+                _socket = socket;
+                _audio = audio;
+                _config = config;
+                _token = token;
+            }
 
             [Command("connect", RunMode = RunMode.Async), Alias("join", "c")]
             [Summary("Connects to your location or a following voice channel in the guild.")]
-            public async Task ConnectAsync([Remainder]IVoiceChannel channel = null)
+            public async Task ConnectAsync([Remainder] IVoiceChannel channel = null)
             {
                 channel = channel ?? (Context.User as IGuildUser).VoiceChannel;
                 if (channel == null)
@@ -138,7 +138,7 @@ namespace Orikivo.Modules
                 displayEmbed.WithTitle("Stopped:");
                 if (queue.Count == 0)
                 {
-                    
+
                     displayEmbed.WithDescription("Nothing is currently playing.");
                     await ReplyAsync(null, false, displayEmbed.Build());
                     return;
@@ -167,7 +167,7 @@ namespace Orikivo.Modules
 
             [Command("queue", RunMode = RunMode.Async), Alias("q")]
             [Summary("Displays the current list of audio to be played.")]
-            public async Task DisplayQueueAsync([Remainder]string getGuild = null)
+            public async Task DisplayQueueAsync([Remainder] string getGuild = null)
             {
                 IGuild contextGuild = Context.Guild;
 
@@ -230,7 +230,7 @@ namespace Orikivo.Modules
             [Command("raw", RunMode = RunMode.Async), Alias("r")]
             [Summary("Executes a raw process directly to the variables used.")]
             [RequireOwner]
-            public async Task ProcessAsync(string fileName, [Remainder]string arguments)
+            public async Task ProcessAsync(string fileName, [Remainder] string arguments)
             {
                 var displayEmbed = new EmbedBuilder();
                 displayEmbed.WithColor(213, 16, 93);
@@ -239,7 +239,7 @@ namespace Orikivo.Modules
                 var process = _audio.CreateDefaultProcess($"{fileName}", $"{arguments}");
                 var processOutput = process.StandardOutput.ReadToEnd();
                 if (processOutput.Length > 2000) { processOutput = processOutput.Substring(0, 1992); }
-                processOutput = "```\n" + processOutput +"```";
+                processOutput = "```\n" + processOutput + "```";
 
                 await ReplyAsync(processOutput, false, displayEmbed.Build());
             }
@@ -247,7 +247,7 @@ namespace Orikivo.Modules
             //FIX METHOD
             [Command("add", RunMode = RunMode.Async)]
             [Summary("Plays the song specified without downloading.")]
-            public async Task PlayAsync([Remainder]string file)
+            public async Task PlayAsync([Remainder] string file)
             {
                 var displayEmbed = new EmbedBuilder();
                 displayEmbed.WithColor(213, 16, 93);
@@ -283,7 +283,7 @@ namespace Orikivo.Modules
 
                 var selfVoice = Context.Guild.GetCurrentUserAsync().Result.VoiceChannel ?? null;
                 var contextVoice = (Context.User as IGuildUser).VoiceChannel ?? null;
-                
+
                 if (contextVoice == null && selfVoice == null)
                 {
                     await ReplyAsync("`I need a channel to connect to in order to play audio.`");
@@ -418,7 +418,7 @@ namespace Orikivo.Modules
 
             [Command("information", RunMode = RunMode.Async), Alias("info")]
             [Summary("Pull up all available information of a video from the accepted sources.")]
-            public async Task CollectUrlInfoAsync([Remainder]string filePath)
+            public async Task CollectUrlInfoAsync([Remainder] string filePath)
             {
                 var infoBase = _audio.CollectAllAudioInformation(filePath);
                 var infoEmbed = new EmbedBuilder();
